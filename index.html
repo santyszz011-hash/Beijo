@@ -2,122 +2,140 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Um Beijo 💋</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-
-body{
-font-family:Arial,sans-serif;
-background:#ffd1dc;
-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-overflow:hidden;
-padding:20px
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-.box{
-width:100%;
-max-width:400px
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #ffd1dc, #ffeef3);
+  height: 100vh;
+  overflow: hidden;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
 }
 
-h1{
-color:#b54969;
-margin-bottom:10px
+.box {
+  width: 90%;
+  max-width: 400px;
 }
 
-p{
-color:#8c5369;
-margin-bottom:25px
+h1 {
+  color: #b54969;
+  font-size: 34px;
+  margin-bottom: 15px;
 }
 
-input{
-width:100%;
-padding:15px;
-border:2px solid #ff69b4;
-border-radius:25px;
-font-size:16px;
-text-align:center;
-outline:none;
-margin-bottom:12px
+p {
+  color: #8c5369;
+  font-size: 18px;
+  margin-bottom: 35px;
 }
 
-button{
-width:100%;
-padding:17px;
-border:0;
-border-radius:30px;
-background:#ff69b4;
-color:white;
-font-size:17px;
-font-weight:bold;
-box-shadow:0 4px 10px #0002;
-cursor:pointer
+button {
+  width: 100%;
+  padding: 20px;
+
+  border: none;
+  border-radius: 40px;
+
+  background: #ff69b4;
+  color: white;
+
+  font-size: 20px;
+  font-weight: bold;
+
+  box-shadow: 0 8px 20px #b5496940;
+
+  transition: transform 0.15s;
 }
 
-button:active{
-transform:scale(.96)
+button:active {
+  transform: scale(0.94);
 }
 
-#app{
-display:none
+#mensagem {
+  margin-top: 25px;
+
+  color: #b54969;
+  font-size: 18px;
+  font-weight: bold;
+
+  min-height: 30px;
 }
 
-.status{
-margin:15px 0;
-padding:8px 12px;
-border-radius:15px;
-font-size:13px;
-font-weight:bold;
-color:#2e7d32;
-background:#2e7d3215
+.beijo {
+  position: fixed;
+
+  left: 50%;
+  bottom: 30%;
+
+  font-size: 60px;
+
+  pointer-events: none;
+
+  animation: subir 2s forwards;
 }
 
-.contadores{
-display:flex;
-justify-content:space-around;
-background:#ffffff80;
-padding:15px;
-border-radius:20px;
-margin-bottom:20px
+@keyframes subir {
+
+  0% {
+    opacity: 1;
+    transform:
+      translate(-50%, 0)
+      scale(0.4)
+      rotate(-10deg);
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate(
+        calc(-50% + var(--x)),
+        -300px
+      )
+      scale(1.7)
+      rotate(15deg);
+  }
 }
 
-.contador b{
-display:block;
-font-size:24px;
-color:#b54969;
-margin-top:4px
+.coracao {
+  position: fixed;
+
+  font-size: 25px;
+
+  pointer-events: none;
+
+  animation: coracao 2.5s forwards;
 }
 
-.msg{
-margin-top:20px;
-min-height:30px;
-color:#b54969;
-font-weight:bold
-}
+@keyframes coracao {
 
-.beijo{
-position:fixed;
-left:50%;
-bottom:30%;
-font-size:50px;
-animation:subir 1.5s forwards;
-pointer-events:none
-}
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(0.5);
+  }
 
-@keyframes subir{
-0%{
-opacity:1;
-transform:translate(-50%,0) scale(.5)
-}
-100%{
-opacity:0;
-transform:translate(calc(-50% + var(--x)),-250px) scale(1.6)
-}
+  100% {
+    opacity: 0;
+    transform: translateY(-400px) scale(1.5);
+  }
 }
 </style>
 </head>
@@ -126,415 +144,256 @@ transform:translate(calc(-50% + var(--x)),-250px) scale(1.6)
 
 <div class="box">
 
-<div id="inicio">
+  <h1>💗 Um Beijo 💋</h1>
 
-<h1>💗 Um Beijo 💋</h1>
+  <p>
+    Aperte o botão para receber um beijo...
+  </p>
 
-<p>
-Digite o mesmo nome de sala no celular de vocês.
-</p>
+  <button onclick="mandarBeijo()">
+    💋 Mandar um Beijo
+  </button>
 
-<input
-id="sala"
-placeholder="Ex: casal2026"
-autocomplete="off"
->
-
-<button onclick="conectar()">
-🔗 Conectar
-</button>
+  <div id="mensagem">
+    ❤️
+  </div>
 
 </div>
-
-
-<div id="app">
-
-<h1>💗 Um Beijo 💋</h1>
-
-<p>
-Sala: <b id="nomeSala"></b>
-</p>
-
-<div id="status" class="status">
-🟡 Conectando...
-</div>
-
-<div class="contadores">
-
-<div class="contador">
-Enviados 💋
-<b id="enviados">0</b>
-</div>
-
-<div class="contador">
-Recebidos 😘
-<b id="recebidos">0</b>
-</div>
-
-</div>
-
-<button onclick="mandarBeijo()">
-💋 Mandar um Beijo
-</button>
-
-<div id="mensagem" class="msg">
-Aperte o botão para mandar amor...
-</div>
-
-</div>
-
-</div>
-
-
-<!-- MQTT.JS -->
-<script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
 
 
 <script>
 
-let cliente = null;
-let topico = "";
-
-let meuId =
-"user_" +
-Math.random().toString(36).substring(2,10);
-
-let enviados = 0;
-let recebidos = 0;
+let audio = null;
+let musicaTocando = false;
 
 
 /* =========================
-   CONECTAR
+   BOTÃO
 ========================= */
 
-function conectar(){
+function mandarBeijo() {
 
-let nome =
-document.getElementById("sala").value.trim();
+  beijoAnimacao();
 
-if(!nome){
+  somBeijo();
 
-alert("Digite o nome da sala!");
+  iniciarMusica();
 
-return;
-}
-
-
-/* Verifica se MQTT carregou */
-
-if(typeof mqtt === "undefined"){
-
-alert(
-"Não foi possível carregar o sistema de conexão. Recarregue a página e tente novamente."
-);
-
-return;
-}
-
-
-/* Cria o nome da sala */
-
-topico =
-"umbeijo_" +
-nome.toLowerCase().replace(/[^a-z0-9]/g,"");
-
-
-/* Mostra aplicativo */
-
-document.getElementById("nomeSala").innerText =
-nome;
-
-document.getElementById("inicio").style.display =
-"none";
-
-document.getElementById("app").style.display =
-"block";
-
-document.getElementById("status").innerText =
-"🟡 Conectando...";
-
-
-/* =========================
-   CONEXÃO MQTT
-========================= */
-
-cliente = mqtt.connect(
-"wss://broker.hivemq.com:8884/mqtt",
-{
-clientId:
-"beijo_" +
-Math.random().toString(36).substring(2,12),
-
-clean:true,
-
-connectTimeout:10000,
-
-reconnectPeriod:3000
-}
-);
-
-
-/* CONECTADO */
-
-cliente.on("connect",function(){
-
-cliente.subscribe(
-topico,
-function(erro){
-
-if(erro){
-
-document.getElementById("status").innerText =
-"🔴 Erro ao entrar na sala";
-
-}else{
-
-document.getElementById("status").innerText =
-"🟢 Conectado ao vivo";
-
-}
-
-});
-
-});
-
-
-/* RECEBER MENSAGEM */
-
-cliente.on("message",function(topic,message){
-
-try{
-
-let dados =
-JSON.parse(message.toString());
-
-if(dados.sender !== meuId){
-
-receberBeijo();
-
-}
-
-}catch(e){
-
-console.log(e);
-
-}
-
-});
-
-
-/* ERRO */
-
-cliente.on("error",function(){
-
-document.getElementById("status").innerText =
-"🔴 Erro na conexão";
-
-});
-
-
-/* CONEXÃO PERDIDA */
-
-cliente.on("offline",function(){
-
-document.getElementById("status").innerText =
-"🟡 Reconectando...";
-
-});
+  document.getElementById("mensagem").innerText =
+    "💋 Um beijo só para você ❤️";
 
 }
 
 
 /* =========================
-   MANDAR BEIJO
+   BEIJO NA TELA
 ========================= */
 
-function mandarBeijo(){
+function beijoAnimacao() {
 
-if(!cliente || !cliente.connected){
+  let beijo = document.createElement("div");
 
-document.getElementById("mensagem").innerText =
-"⏳ Ainda conectando...";
+  beijo.className = "beijo";
 
-return;
+  beijo.innerText = "💋";
+
+  beijo.style.setProperty(
+    "--x",
+    ((Math.random() - 0.5) * 220) + "px"
+  );
+
+  document.body.appendChild(beijo);
+
+  setTimeout(() => {
+    beijo.remove();
+  }, 2000);
+
+
+  /* corações */
+
+  for (let i = 0; i < 5; i++) {
+
+    let coracao = document.createElement("div");
+
+    coracao.className = "coracao";
+
+    coracao.innerText = "❤️";
+
+    coracao.style.left =
+      (30 + Math.random() * 40) + "%";
+
+    coracao.style.bottom = "30%";
+
+    coracao.style.animationDelay =
+      (Math.random() * 0.4) + "s";
+
+    document.body.appendChild(coracao);
+
+    setTimeout(() => {
+      coracao.remove();
+    }, 3000);
+  }
 }
 
 
-enviados++;
+/* =========================
+   SOM DO BEIJO
+========================= */
 
-document.getElementById("enviados").innerText =
-enviados;
+function somBeijo() {
 
+  try {
 
-somBeijo();
+    let AudioContext =
+      window.AudioContext ||
+      window.webkitAudioContext;
 
-animarBeijo();
+    let ctx = new AudioContext();
 
+    let osc = ctx.createOscillator();
 
-document.getElementById("mensagem").innerText =
-"💋 Você mandou um beijo!";
+    let ganho = ctx.createGain();
 
+    osc.type = "sine";
 
-/* Envia */
+    osc.frequency.setValueAtTime(
+      900,
+      ctx.currentTime
+    );
 
-cliente.publish(
-topico,
-JSON.stringify({
+    osc.frequency.exponentialRampToValueAtTime(
+      300,
+      ctx.currentTime + 0.18
+    );
 
-sender:meuId,
+    ganho.gain.setValueAtTime(
+      0.35,
+      ctx.currentTime
+    );
 
-tipo:"beijo"
+    ganho.gain.exponentialRampToValueAtTime(
+      0.01,
+      ctx.currentTime + 0.18
+    );
 
-})
-);
+    osc.connect(ganho);
+
+    ganho.connect(ctx.destination);
+
+    osc.start();
+
+    osc.stop(
+      ctx.currentTime + 0.18
+    );
+
+  } catch (e) {}
 
 }
 
 
 /* =========================
-   RECEBER BEIJO
+   MÚSICA ROMÂNTICA
 ========================= */
 
-function receberBeijo(){
+function iniciarMusica() {
 
-recebidos++;
+  if (musicaTocando) return;
 
-document.getElementById("recebidos").innerText =
-recebidos;
+  musicaTocando = true;
 
+  try {
 
-somBeijo();
+    let AudioContext =
+      window.AudioContext ||
+      window.webkitAudioContext;
 
-animarBeijo();
+    audio = new AudioContext();
 
+    tocarMelodia();
 
-document.getElementById("mensagem").innerText =
-"😘 Seu amor te mandou um beijo!";
-
-}
-
-
-/* =========================
-   ANIMAÇÃO
-========================= */
-
-function animarBeijo(){
-
-let beijo =
-document.createElement("div");
-
-beijo.className =
-"beijo";
-
-beijo.innerText =
-"💋";
-
-
-beijo.style.setProperty(
-"--x",
-((Math.random()-.5)*180)+"px"
-);
-
-
-document.body.appendChild(beijo);
-
-
-setTimeout(function(){
-
-beijo.remove();
-
-},1500);
+  } catch (e) {}
 
 }
 
 
-/* =========================
-   SOM
-========================= */
+function tocarMelodia() {
 
-function somBeijo(){
-
-try{
-
-let AudioContext =
-window.AudioContext ||
-window.webkitAudioContext;
-
-let audio =
-new AudioContext();
+  if (!audio) return;
 
 
-let osc =
-audio.createOscillator();
+  const notas = [
 
-let ganho =
-audio.createGain();
+    261.63, 329.63, 392.00,
+    329.63, 293.66, 349.23,
+    440.00, 349.23,
 
+    261.63, 329.63, 392.00,
+    440.00, 392.00, 329.63,
+    293.66, 261.63
 
-osc.type =
-"sine";
-
-
-osc.frequency.setValueAtTime(
-850,
-audio.currentTime
-);
+  ];
 
 
-osc.frequency.exponentialRampToValueAtTime(
-400,
-audio.currentTime + .18
-);
+  let tempo = 0.45;
 
 
-ganho.gain.setValueAtTime(
-.35,
-audio.currentTime
-);
+  notas.forEach((frequencia, i) => {
+
+    let osc = audio.createOscillator();
+
+    let ganho = audio.createGain();
+
+    osc.type = "sine";
+
+    osc.frequency.value = frequencia;
 
 
-ganho.gain.exponentialRampToValueAtTime(
-.01,
-audio.currentTime + .18
-);
+    let inicio =
+      audio.currentTime +
+      i * tempo;
 
 
-osc.connect(ganho);
+    ganho.gain.setValueAtTime(
+      0,
+      inicio
+    );
 
-ganho.connect(audio.destination);
+    ganho.gain.linearRampToValueAtTime(
+      0.08,
+      inicio + 0.03
+    );
 
-
-osc.start();
-
-osc.stop(
-audio.currentTime + .18
-);
-
-}catch(e){
-
-console.log(e);
-
-}
-
-}
+    ganho.gain.exponentialRampToValueAtTime(
+      0.001,
+      inicio + tempo
+    );
 
 
-/* =========================
-   ENTER
-========================= */
+    osc.connect(ganho);
 
-document.getElementById("sala")
-.addEventListener(
-"keydown",
-function(e){
+    ganho.connect(audio.destination);
 
-if(e.key === "Enter"){
 
-conectar();
+    osc.start(inicio);
+
+    osc.stop(
+      inicio + tempo
+    );
+
+  });
+
+
+  /* repete a música */
+
+  setTimeout(() => {
+
+    if (musicaTocando) {
+      tocarMelodia();
+    }
+
+  }, notas.length * tempo * 1000);
 
 }
-
-});
 
 </script>
 
