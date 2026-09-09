@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Um Beijo 💋</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+font-family:Arial,sans-serif;
+background:#ffd1dc;
+height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+overflow:hidden;
+padding:20px
+}
+.box{width:100%;max-width:400px}
+h1{color:#b54969;margin-bottom:10px}
+p{color:#8c5369;margin-bottom:25px}
+input{
+width:100%;
+padding:15px;
+border:2px solid #ff69b4;
+border-radius:25px;
+font-size:16px;
+text-align:center;
+outline:none;
+margin-bottom:12px
+}
+button{
+width:100%;
+padding:17px;
+border:0;
+border-radius:30px;
+background:#ff69b4;
+color:white;
+font-size:17px;
+font-weight:bold;
+box-shadow:0 4px 10px #0002;
+cursor:pointer
+}
+button:active{transform:scale(.96)}
+#app{display:none}
+.status{
+margin:15px 0;
+padding:8px 12px;
+border-radius:15px;
+font-size:13px;
+font-weight:bold;
+color:#2e7d32;
+background:#2e7d3215
+}
+.contadores{
+display:flex;
+justify-content:space-around;
+background:#ffffff80;
+padding:15px;
+border-radius:20px;
+margin-bottom:20px
+}
+.contador b{
+display:block;
+font-size:24px;
+color:#b54969;
+margin-top:4px
+}
+.msg{
+margin-top:20px;
+min-height:30px;
+color:#b54969;
+font-weight:bold
+}
+.beijo{
+position:fixed;
+left:50%;
+bottom:30%;
+font-size:50px;
+animation:subir 1.5s forwards;
+pointer-events:none
+}
+@keyframes subir{
+0%{opacity:1;transform:translate(-50%,0) scale(.5)}
+100%{opacity:0;transform:translate(calc(-50% + var(--x)),-250px) scale(1.6)}
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+<div id="inicio">
+<h1>💗 Um Beijo 💋</h1>
+
+<p>
+Digite o mesmo nome de sala no celular de vocês.
+</p>
+
+<input id="sala" placeholder="Ex: casal2026">
+
+<button onclick="conectar()">
+🔗 Conectar
+</button>
+</div>
+
+
+<div id="app">
+
+<h1>💗 Um Beijo 💋</h1>
+
+<p>
+Sala: <b id="nomeSala"></b>
+</p>
+
+<div id="status" class="status">
+🟡 Conectando...
+</div>
+
+<div class="contadores">
+
+<div class="contador">
+Enviados 💋
+<b id="enviados">0</b>
+</div>
+
+<div class="contador">
+Recebidos 😘
+<b id="recebidos">0</b>
+</div>
+
+</div>
+
+<button onclick="mandarBeijo()">
+💋 Mandar um Beijo
+</button>
+
+<div id="mensagem" class="msg">
+Aperte o botão para mandar amor...
+</div>
+
+</div>
+
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/paho-mqtt.min.js"></script>
+
+<script>
+
+let cliente=null;
+let topico="";
+let meuId="user_"+Math.random().toString(36).substring(2,10);
+
+let enviados=0;
+let recebidos=0;
+
+
+/* CONECTAR */
+
+function conectar(){
+
+let nome=document.getElementById("sala").value.trim();
+
+if(!nome){
+alert("Digite o nome da sala!");
+return;
+}
+
+if(typeof Paho==="undefined"){
+alert("Aguarde alguns segundos e tente novamente.");
+return;
+}
+
+topico="umbeijo_"+nome.toLowerCase().replace(/[^a-z0-9]/g,"");
+
+document.getElementById("nomeSala").innerText=nome;
+
+document.getElementById("inicio").style.display="none";
+document.getElementById("app").style.display="block";
+
+document.getElementById("status").innerText="🟡 Conectando...";
+
+let id="beijo_"+Math.random().toString(36).substring(2,12);
+
+cliente=new Paho.MQTT.Client(
+"broker.hivemq.com",
+8884,
+id
+);
+
+
+/* QUANDO RECEBER */
+
+cliente.onMessageArrived=function(message){
+
+try{
+
+let dados=JSON.parse(message.payloadString);
+
+if(dados.sender!==meuId){
+
+receberBeijo();
+
+}
+
+}catch(e){}
+
+};
+
+
+/* CONEXÃO PERDIDA */
+
+cliente.onConnectionLost=function(){
+
+document.getElementById("status").innerText=
+"🔴 Conexão perdida";
+
+};
+
+
+/* CONECTAR */
+
+cliente.connect({
+
+useSSL:true,
+
+onSuccess:function(){
+
+cliente.subscribe(topico);
+
+document.getElementById("status").innerText=
+"🟢 Conectado ao vivo";
+
+},
+
+onFailure:function(){
+
+document.getElementById("status").innerText=
+"🔴 Falha na conexão";
+
+}
+
+});
+
+}
+
+
+/* MANDAR BEIJO */
+
+function mandarBeijo(){
+
+enviados++;
+
+document.getElementById("enviados").innerText=enviados;
+
+somBeijo();
+
+animarBeijo();
+
+document.getElementById("mensagem").innerText=
+"💋 Você mandou um beijo!";
+
+
+if(cliente && cliente.isConnected()){
+
+let mensagem=new Paho.MQTT.Message(
+
+JSON.stringify({
+
+sender:meuId,
+tipo:"beijo"
+
+})
+
+);
+
+mensagem.destinationName=topico;
+
+cliente.send(mensagem);
+
+}
+
+}
+
+
+/* RECEBER BEIJO */
+
+function receberBeijo(){
+
+recebidos++;
+
+document.getElementById("recebidos").innerText=recebidos;
+
+somBeijo();
+
+animarBeijo();
+
+document.getElementById("mensagem").innerText=
+"😘 Seu amor te mandou um beijo!";
+
+}
+
+
+/* ANIMAÇÃO */
+
+function animarBeijo(){
+
+let beijo=document.createElement("div");
+
+beijo.className="beijo";
+
+beijo.innerText="💋";
+
+beijo.style.setProperty(
+"--x",
+((Math.random()-.5)*180)+"px"
+);
+
+document.body.appendChild(beijo);
+
+setTimeout(function(){
+
+beijo.remove();
+
+},1500);
+
+}
+
+
+/* SOM */
+
+function somBeijo(){
+
+try{
+
+let AudioContext=
+window.AudioContext||
+window.webkitAudioContext;
+
+let audio=new AudioContext();
+
+let osc=audio.createOscillator();
+
+let ganho=audio.createGain();
+
+osc.type="sine";
+
+osc.frequency.setValueAtTime(
+850,
+audio.currentTime
+);
+
+osc.frequency.exponentialRampToValueAtTime(
+400,
+audio.currentTime+.18
+);
+
+ganho.gain.setValueAtTime(
+.35,
+audio.currentTime
+);
+
+ganho.gain.exponentialRampToValueAtTime(
+.01,
+audio.currentTime+.18
+);
+
+osc.connect(ganho);
+
+ganho.connect(audio.destination);
+
+osc.start();
+
+osc.stop(
+audio.currentTime+.18
+);
+
+}catch(e){}
+
+}
+
+
+/* ENTER */
+
+document.getElementById("sala").addEventListener(
+"keydown",
+function(e){
+
+if(e.key==="Enter"){
+conectar();
+}
+
+});
+
+</script>
+
+</body>
+</html>
