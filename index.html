@@ -13,36 +13,52 @@
             box-sizing: border-box;
         }
 
-        html, body {
+        html,
+        body {
             width: 100%;
             height: 100%;
             overflow: hidden;
             font-family: Arial, sans-serif;
         }
 
-        /* TELA INICIAL */
+        /* =========================
+           TELA INICIAL
+        ========================= */
+
         #inicio {
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #ffb6c9, #ff5f91);
+            min-height: 100vh;
+
+            background:
+                radial-gradient(circle at 50% 20%, rgba(255,255,255,.25), transparent 30%),
+                linear-gradient(135deg, #ffb6c9, #ff5f91);
+
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+
             text-align: center;
             padding: 25px;
+
+            transition: opacity .6s ease;
         }
 
         .coracao {
-            font-size: 75px;
-            animation: pulsar 1.2s infinite;
+            font-size: 78px;
             margin-bottom: 20px;
+
+            animation: pulsar 1.2s infinite;
         }
 
         h1 {
             color: white;
             font-size: 30px;
             margin-bottom: 12px;
+
+            text-shadow:
+                0 3px 10px rgba(0,0,0,.15);
         }
 
         p {
@@ -53,66 +69,123 @@
 
         #botao {
             border: none;
+
             background: white;
             color: #f04478;
+
             font-size: 19px;
             font-weight: bold;
+
             padding: 18px 30px;
+
             border-radius: 50px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+
+            box-shadow:
+                0 10px 30px rgba(0,0,0,.20);
+
             cursor: pointer;
+
+            -webkit-tap-highlight-color: transparent;
+
+            transition:
+                transform .15s ease,
+                box-shadow .15s ease;
         }
 
         #botao:active {
-            transform: scale(0.92);
+            transform: scale(.91);
+
+            box-shadow:
+                0 5px 15px rgba(0,0,0,.20);
         }
 
-        /* TELA DO BEIJO */
+
+        /* =========================
+           TELA DO BEIJÃO
+        ========================= */
+
         #telaBeijo {
             position: fixed;
+
             inset: 0;
-            background: linear-gradient(135deg, #ff8fb1, #ff477e);
+
+            background:
+                radial-gradient(circle, #ffb2c7, #ff4d82);
+
             display: none;
+
             align-items: center;
             justify-content: center;
+
             z-index: 10;
         }
 
         #beijo {
-            font-size: 70px;
-            animation: beijo 1.5s ease forwards;
+            font-size: 80px;
+
+            animation:
+                beijoAnimacao 1.6s ease forwards;
         }
 
-        /* TELA DO VÍDEO */
+
+        /* =========================
+           TELA DO VÍDEO
+        ========================= */
+
         #telaVideo {
             position: fixed;
+
             inset: 0;
+
+            width: 100%;
+            height: 100%;
+
             background: black;
+
             display: none;
+
             align-items: center;
             justify-content: center;
+
             z-index: 20;
         }
 
         #video {
             width: 100%;
             height: 100%;
+
             object-fit: contain;
+
             background: black;
         }
 
-        /* CORAÇÕES */
+
+        /* =========================
+           CORAÇÕES
+        ========================= */
+
         .coracaoFlutuante {
             position: fixed;
+
             bottom: -60px;
-            font-size: 25px;
-            animation: subir 4s linear forwards;
+
             pointer-events: none;
+
             z-index: 15;
+
+            animation:
+                subir 4s linear forwards;
         }
 
+
+        /* =========================
+           ANIMAÇÕES
+        ========================= */
+
         @keyframes pulsar {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: scale(1);
             }
 
@@ -121,18 +194,20 @@
             }
         }
 
-        @keyframes beijo {
+
+        @keyframes beijoAnimacao {
+
             0% {
-                transform: scale(0.2);
+                transform: scale(.2);
                 opacity: 0;
             }
 
-            30% {
+            25% {
                 transform: scale(1.4);
                 opacity: 1;
             }
 
-            60% {
+            55% {
                 transform: scale(1);
                 opacity: 1;
             }
@@ -143,141 +218,270 @@
             }
         }
 
+
         @keyframes subir {
+
             from {
-                transform: translateY(0) rotate(0deg);
+                transform:
+                    translateY(0)
+                    rotate(0deg);
+
                 opacity: 1;
             }
 
             to {
-                transform: translateY(-110vh) rotate(360deg);
+                transform:
+                    translateY(-110vh)
+                    rotate(360deg);
+
                 opacity: 0;
             }
         }
+
     </style>
 </head>
 
+
 <body>
 
-    <!-- TELA INICIAL -->
+
+    <!-- =================================
+         TELA INICIAL
+    ================================== -->
+
     <div id="inicio">
 
-        <div class="coracao">💗</div>
+        <div class="coracao">
+            💗
+        </div>
 
-        <h1>Tenho uma coisa pra você...</h1>
+        <h1>
+            Tenho uma coisa pra você...
+        </h1>
 
-        <p>Mas primeiro aperta aqui 👀</p>
+        <p>
+            Mas primeiro aperta aqui 👀
+        </p>
 
-        <button id="botao" onclick="receberBeijo()">
+        <button
+            id="botao"
+            onclick="receberBeijo()">
+
             Receber um beijo 💋
+
         </button>
 
     </div>
 
 
-    <!-- TELA DO BEIJO -->
+
+    <!-- =================================
+         TELA DO BEIJÃO
+    ================================== -->
+
     <div id="telaBeijo">
-        <div id="beijo">💋</div>
+
+        <div id="beijo">
+            💋
+        </div>
+
     </div>
 
 
-    <!-- ÁUDIO REAL DO BEIJO -->
-    <audio id="somBeijo" preload="auto">
-        <source src="beijo.mp3" type="audio/mpeg">
+
+    <!-- =================================
+         ÁUDIO REAL DO BEIJO
+    ================================== -->
+
+    <audio
+        id="somBeijo"
+        preload="auto">
+
+        <source
+            src="beijo.mp3"
+            type="audio/mpeg">
+
     </audio>
 
 
-    <!-- VÍDEO -->
+
+    <!-- =================================
+         VÍDEO
+    ================================== -->
+
     <div id="telaVideo">
 
-        <video id="video" playsinline>
-            <source src="video.mp4" type="video/mp4">
+        <video
+            id="video"
+            playsinline
+            controls>
+
+            <source
+                src="copy_3643711C-5984-48E7-9552-C840D7E6E67C.mov"
+                type="video/quicktime">
 
             Seu navegador não conseguiu reproduzir o vídeo.
+
         </video>
 
     </div>
 
 
+
     <script>
+
+        /* =================================
+           FUNÇÃO PRINCIPAL
+        ================================== */
 
         function receberBeijo() {
 
-            // Esconde a tela inicial
-            document.getElementById("inicio").style.display = "none";
+            const inicio =
+                document.getElementById("inicio");
 
-            // Mostra a tela do beijo
-            document.getElementById("telaBeijo").style.display = "flex";
+            const telaBeijo =
+                document.getElementById("telaBeijo");
 
-            // Toca o beijo
-            const som = document.getElementById("somBeijo");
+            const som =
+                document.getElementById("somBeijo");
+
+            const video =
+                document.getElementById("video");
+
+            const telaVideo =
+                document.getElementById("telaVideo");
+
+
+            /*
+             * Esconde a tela inicial
+             */
+
+            inicio.style.display = "none";
+
+
+            /*
+             * Mostra o beijão
+             */
+
+            telaBeijo.style.display = "flex";
+
+
+            /*
+             * Reinicia o áudio
+             */
 
             som.currentTime = 0;
 
-            som.play().catch(function() {
-                console.log("Não foi possível reproduzir o áudio.");
+
+            /*
+             * Toca o beijo REAL
+             */
+
+            som.play().catch(function(erro) {
+
+                console.log(
+                    "Erro ao tocar o beijo:",
+                    erro
+                );
+
             });
 
-            // Solta corações
+
+            /*
+             * Animações
+             */
+
             criarCoracoes();
 
-            // Depois do beijo, mostra o vídeo
+
+            /*
+             * Depois do beijo:
+             * abre o vídeo
+             */
+
             setTimeout(function() {
 
-                document.getElementById("telaBeijo").style.display = "none";
-
-                const telaVideo =
-                    document.getElementById("telaVideo");
-
-                const video =
-                    document.getElementById("video");
+                telaBeijo.style.display = "none";
 
                 telaVideo.style.display = "flex";
 
                 video.currentTime = 0;
 
-                video.play().catch(function() {
-                    console.log("Toque no vídeo para reproduzir.");
+
+                /*
+                 * Tenta iniciar automaticamente
+                 */
+
+                video.play().catch(function(erro) {
+
+                    console.log(
+                        "O navegador bloqueou o autoplay:",
+                        erro
+                    );
+
                 });
 
             }, 1700);
+
         }
 
 
+
+        /* =================================
+           CORAÇÕES
+        ================================== */
+
         function criarCoracoes() {
 
-            for (let i = 0; i < 20; i++) {
+            for (
+                let i = 0;
+                i < 20;
+                i++
+            ) {
 
                 setTimeout(function() {
 
                     const coracao =
                         document.createElement("div");
 
+
                     coracao.className =
                         "coracaoFlutuante";
 
+
                     coracao.innerHTML =
-                        Math.random() > 0.5
+                        Math.random() > .5
                         ? "💗"
                         : "💋";
+
 
                     coracao.style.left =
                         Math.random() * 100 + "vw";
 
+
                     coracao.style.fontSize =
                         (20 + Math.random() * 30) + "px";
+
 
                     coracao.style.animationDuration =
                         (3 + Math.random() * 2) + "s";
 
-                    document.body.appendChild(coracao);
+
+                    document.body.appendChild(
+                        coracao
+                    );
+
 
                     setTimeout(function() {
+
                         coracao.remove();
+
                     }, 6000);
 
                 }, i * 70);
+
             }
+
         }
 
     </script>
